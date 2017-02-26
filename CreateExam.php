@@ -4,7 +4,6 @@
 	<body>
 		<?php
 
-
 //
 //		THIS PART ONLY FOR BACKEND. DO NOT TOUCH.
 //
@@ -12,43 +11,34 @@
 // Create connection
 $conn = mysqli_connect("sql2.njit.edu", "bm297", "WY2X2ekF", "bm297");
 
-// Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
 // Select table
 $tbl = "Question_bank";
 
 // Query
-$query = "SELECT * from $tbl";
+$query = "select * from $tbl";
 
 // Execute the query
 $rows = mysqli_query($conn, $query);
-echo $rows;
 
+//
+// echo $rows; DO NOT USE
+//
 
-/*
-		$conn = mysqli_connect("localhost", "cs288", "cs288pass");
+$cols = mysqli_num_fields($rows); # Returns 5
 
-		$db = mysqli_select_db($conn,"nyse");
-
-		$tbl = "nyse_2016_11_30_14_40_22";
-
-		$query = "select * from $tbl";
-
-		$rows = mysqli_query($conn, $query);
-
-	$cols = mysqli_num_fields($rows); # Returns 6
 
 	echo "<table>";
+
 	echo "<tr>";
-	for($col = 0; $col<$cols; $col++){
-		echo "<th>";
-		$field = mysqli_fetch_field($rows);
-		echo $field->name;
-		echo "</th>";
-	}
+	echo "<td>Function Name</td>";
+	echo "<td>Language</td>";
+	echo "<td>Question</td>";
+	echo "<td>Difficulty</td>";
+	echo "<td>Test Case</td>";
+	echo "<td>Test Result</td>";
+	echo "</tr>";
+
+	echo "<tr>";
 
 	while($elem = mysqli_fetch_array($rows)){
 		echo "<tr>";
@@ -60,7 +50,7 @@ echo $rows;
 
 	echo "</tr>";	
 	echo "</table>";
-*/
+
 
 	?>
 	</body>
