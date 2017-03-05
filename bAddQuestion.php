@@ -1,7 +1,9 @@
 <?php
 
+//$capture = json_decode(file_get_contents("php://input"), true);
+
 $function_name = $_POST["function_name"];
-$language = $_POST["language"];
+$type = $_POST["type"];
 $question = $_POST["question"];
 $difficulty = $_POST["difficulty"];
 $test_case = $_POST["test_case"];
@@ -24,7 +26,7 @@ if (!$conn) {
 $tbl = "Question_bank";
 
 // Query
-$query = "INSERT INTO $tbl (Fname, Language, Question, Difficulty, Test, Result) VALUES ('{$function_name}', '{$language}', '{$question}', '{$difficulty}', '{$test_case}', '{$test_result}')";
+$query = "INSERT INTO $tbl (Fname, Type, Question, Difficulty, Test, Result) VALUES ('{$function_name}', '{$type}', '{$question}', '{$difficulty}', '{$test_case}', '{$test_result}')";
 
 // Execute the query
 mysqli_query($conn, $query);

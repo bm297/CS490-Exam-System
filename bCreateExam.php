@@ -4,55 +4,49 @@
 	<body>
 		<?php
 
-//
-//		THIS PART ONLY FOR BACKEND. DO NOT TOUCH.
-//
+		//
+		//		THIS PART ONLY FOR BACKEND. DO NOT TOUCH.
+		//
 
-// Create connection
-$conn = mysqli_connect("sql2.njit.edu", "bm297", "WY2X2ekF", "bm297");
+		$capture = file_get_contents("php://input");
+		$selection_array = explode(' ', $capture);
 
-// Select table
-$tbl = "Question_bank";
+		// Create connection
+		$conn = mysqli_connect("sql2.njit.edu", "bm297", "WY2X2ekF", "bm297");
 
-// Query
-$query = "select * from $tbl";
+		// Depends on the call.
+		// Retrieve questions from database the return them to mCreateExam
+		if($selection_array[0] != 'selected'){
 
-// Execute the query
-$rows = mysqli_query($conn, $query);
+			// Select table
+			$tbl = "Question_bank";
 
-//
-// echo $rows; DO NOT USE
-//
+			// Query
+			$query = "select * from $tbl";
 
-$cols = mysqli_num_fields($rows); # Returns 5
+			// Execute the query
+			$rows = mysqli_query($conn, $query);
 
+			// Create a JSON array of DB Object
+			$json = array();
+			while($row = mysqli_fetch_assoc($rows)){
+				$json[] = $row['Question'];
+				$json[] = $row['Difficulty'];
+			};
 
-	echo "<table>";
+		// Returns JSON array of DB Object
+			echo json_encode($json);
 
-	echo "<tr>";
-	echo "<td>Function Name</td>";
-	echo "<td>Language</td>";
-	echo "<td>Question</td>";
-	echo "<td>Difficulty</td>";
-	echo "<td>Test Case</td>";
-	echo "<td>Test Result</td>";
-	echo "</tr>";
-
-	echo "<tr>";
-
-	while($elem = mysqli_fetch_array($rows)){
-		echo "<tr>";
-		for($i = 0; $i < $cols; $i++){
-			echo "<td>$elem[$i] </td>";
+		// Store in database the instructor's selection of exam questions	
+		} else{
+			$tbl = "Exam_selection";
+			for($i=0; $i<sizeof($selection_array); $i++){
+				$query = "INSERT INTO $tbl (Selection) VALUES ('{$selection_array[$i]}')";
+				mysqli_query($conn, $query);
+			}
+			echo 'Exam Created';
 		}
-		echo "</tr>";
-	}
-
-	echo "</tr>";	
-	echo "</table>";
-
-
 	?>
-	</body>
+</body>
 </head>  
 </html>
